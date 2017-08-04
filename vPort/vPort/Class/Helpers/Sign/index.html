@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>标题</title>
+    <script type="text/javascript" src="app.js"></script>
+    <script type="text/javascript">
+        var Buffer = vChain.Buffer;
+        var vchain = vChain.vChainlib;
+        var vchainMessage = vChain.vChainMessage;
+        
+        var sign = function (privateKey, rawTransaction) {
+            var priv = vchain.ECPair.fromWIF(privateKey);
+            var tx = vchain.Transaction.fromHex(rawTransaction);
+            var txb = vchain.TransactionBuilder.fromTransaction(tx);
+            var signed;
+            
+            txb.tx.ins.forEach(function(input, i) {
+                               txb.sign(i, priv);
+                               });
+                               
+                               try {
+                                   signed = txb.build().toHex();
+                                   passValue(signed);
+<!--                                   return signed;-->
+                               } catch (e) {
+                                   jsError(e);
+<!--                                   return e.message;-->
+                               }
+        }
+    
+    var signMultisig = function (privateKeys, redeemScript, rawTransaction) {
+        
+        var redeemScript = new Buffer(redeemScript, 'hex');
+        
+        var tx = vchain.Transaction.fromHex(rawTransaction);
+        var txb = vchain.TransactionBuilder.fromTransaction(tx);
+        
+        var signedRawTransaction;
+        
+        txb.tx.ins.forEach(function(input, i) {
+                           txb.sign(i, bitcoin.ECPair.fromWIF(privateKeys), redeemScript);
+                           });
+                           
+                           try {
+                               signedRawTransaction = txb.build().toHex();
+<!--                               passValue(rawSignedTransaction);-->
+<!--                               return signedRawTransaction;-->
+                           } catch (e) {
+                              jsError(e);
+<!--                              return e.message;-->
+
+                           }
+    }
+    
+    var signMessage = function (privateKey, message) {
+        var keyPair = vchain.ECPair.fromWIF(privateKey);
+        privateKey = keyPair.d.toBuffer(32);
+        var messagePrefix = vchain.networks.bitcoin.messagePrefix;
+        var signature = vchainMessage.sign(message, messagePrefix, privateKey, keyPair.compressed);
+        passValue(signature.toString('base64'));
+<!--        return signature.toString('base64');-->
+    }
+    
+    var signToken = function (rawPrivateKey, tokenPayload) {
+        try {
+            var token = new vChain.TokenSigner('ES256k', rawPrivateKey).sign(tokenPayload);
+            passSignTokenValue(token);
+<!--                signTool.passJWTValue(hh);-->
+<!--            return token;-->
+        } catch (e) {
+            jsError(e);
+<!--            return e.message;-->
+
+        }
+    }
+    
+    var decodeToken = function (token) {
+        try {
+            var tokenData = vChain.decodeToken(token);
+            passDecodeTokenValue(tokenData);
+<!--            return tokenData;-->
+        } catch (e) {
+            jsError(e);
+<!--            return e.message;-->
+        }
+    }
+    
+    var verifyToken = function (rawPublicKey, token) {
+        try {
+            var verified = new vChain.TokenVerifier('ES256k', rawPublicKey).verify(token);
+            passVerifyTokenValue(verified);
+<!--            return verified;-->
+        } catch (e) {
+            jsError(e);
+<!--            return e.message;-->
+        }
+    }
+
+    </script>
+</head>
+<body>
+    <h1>haha11</h1>
+</body>
+
+</html>
