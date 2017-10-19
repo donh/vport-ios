@@ -1,0 +1,31 @@
+/*
+ * Copyright (C) 2016-2016, The Little-Sparkle Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS-IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#import <UIKit/UIKit.h>
+
+@interface BaseView : UIView
+
+//如何在子视图中获取父视图的ViewController
+- (UIViewController *)viewController;
+
+- (CGFloat)widthForStr:(NSString *)string height:(CGFloat)height font:(UIFont *)font;
+- (CGFloat)heightForStr:(NSString *)string width:(CGFloat)width font:(UIFont *)font;
+
+@property (nonatomic, assign) id target; /* 让谁去执行方法 */
+@property (nonatomic, assign) SEL action; /* 执行选择的方法 */
+- (void)addTarget:(id)target selector:(SEL)selector;
+
+@end
